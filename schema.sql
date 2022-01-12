@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS styles(
    styles_id serial NOT NULL PRIMARY KEY,
    productId INT NOT NULL,
    name VARCHAR NOT NULL,
-   sale_price INT,
-   original_price INT,
+   sale_price VARCHAR,
+   original_price VARCHAR,
    default_style INT NOT NULL,
    FOREIGN KEY (productId) REFERENCES product (product_id)
 );
@@ -40,3 +40,10 @@ CREATE TABLE IF NOT EXISTS cart(
    product_id INT NOT NULL REFERENCES product (product_id),
    active INT
 );
+
+\COPY product FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/productDATA.csv' DELIMITER ',' CSV HEADER;
+\COPY styles FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/stylesDATA.csv' DELIMITER ',' CSV HEADER;
+\COPY skus FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/skusDATA.csv' DELIMITER ',' CSV HEADER;
+\COPY features FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/featuresDATA.csv' DELIMITER ',' CSV HEADER;
+\COPY cart FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/cartDATA.csv' DELIMITER ',' CSV HEADER;
+
