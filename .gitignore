@@ -1,2 +1,7 @@
 package-lock.json
 node_modules
+productDATA.csv
+stylesDATA.csv
+skusDATA.csv
+cartDATA.csv
+featuresDATA.csv
