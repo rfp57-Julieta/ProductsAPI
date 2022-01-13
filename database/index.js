@@ -1,25 +1,25 @@
-const { Client } = require('pg');
+const { Client, Pool} = require('pg');
 
-// const pool = new Pool({
-//   host: "localhost",
-//   user: "postgres",
-//   database: "products",
-//   password: "123",
-//   port: 5432,
-//   idleTimeoutMillis: 0,
-//   connectionTimeoutMillis: 0,
-// });
-
-
-const client = new Client({
+const pool = new Pool({
   host: "localhost",
   user: "postgres",
   database: "products",
   password: "123",
   port: 5432,
+  idleTimeoutMillis: 0,
+  connectionTimeoutMillis: 0,
 });
 
-client.connect()
+
+// const client = new Client({
+//   host: "localhost",
+//   user: "postgres",
+//   database: "products",
+//   password: "123",
+//   port: 5432,
+// });
+
+pool.connect()
   .then((res)=> {
     console.log('Connect to Postgres successfully!');
   })
@@ -28,6 +28,6 @@ client.connect()
   })
 
 module.exports = {
-  client,
-  // pool
+  // client,
+  pool
 }
