@@ -16,5 +16,5 @@ app.listen(PORT, function() {
   console.log(`Listening on port ${PORT}`);
 })
 
-// app.use('/product', router);
+app.use('/products', router);
 

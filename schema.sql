@@ -1,5 +1,5 @@
 
-DROP TABLE IF EXISTS product, styles, skus, features, cart;
+DROP TABLE IF EXISTS product, styles, photos, skus, features, cart;
 
 CREATE TABLE IF NOT EXISTS product(
    product_id serial NOT NULL PRIMARY KEY,
@@ -18,6 +18,13 @@ CREATE TABLE IF NOT EXISTS styles(
    original_price VARCHAR,
    default_style INT NOT NULL,
    FOREIGN KEY (productId) REFERENCES product (product_id)
+);
+
+CREATE TABLE IF NOT EXISTS photos(
+  photos_id serial NOT NULL PRIMARY KEY,
+  styleId INT NOT NULL REFERENCES styles (styles_id),
+  url VARCHAR,
+  thumbnail_url VARCHAR
 );
 
 CREATE TABLE IF NOT EXISTS skus(
@@ -43,6 +50,7 @@ CREATE TABLE IF NOT EXISTS cart(
 
 \COPY product FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/productDATA.csv' DELIMITER ',' CSV HEADER;
 \COPY styles FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/stylesDATA.csv' DELIMITER ',' CSV HEADER;
+\COPY photos FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/photosDATA.csv' DELIMITER ',' CSV HEADER;
 \COPY skus FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/skusDATA.csv' DELIMITER ',' CSV HEADER;
 \COPY features FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/featuresDATA.csv' DELIMITER ',' CSV HEADER;
 \COPY cart FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/cartDATA.csv' DELIMITER ',' CSV HEADER;
