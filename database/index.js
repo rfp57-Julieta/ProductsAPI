@@ -38,28 +38,22 @@ const getProducts = function(cb) {
   })
 }
 
+
 const getAProduct = function(id, cb) {
-  let queryProduct = `SELECT * FROM product WHERE product_id = ${id}`;
-  let queryFeature = `SELECT feature,value FROM features WHERE product_id = ${id}`;
-  pool.query(queryProduct, (err, result1) => {
-    if(err) {
+  let queryProduct = `SELECT p.*,
+  json_agg(json_build_object('feature', f.feature, 'value', f.value)) as features
+  FROM public."product" as p
+  LEFT JOIN public."features" as f ON f.product_id = p.product_id
+  WHERE p.product_id = ${id}
+  GROUP BY p.product_id`
+  pool.query(queryProduct, (err, result) => {
+    if (err) {
       cb(err, null);
     } else {
-      let package = result1.rows[0];
-      // console.log(package);
-      pool.query(queryFeature, (err, result2) => {
-        if (err) {
-          cb(err, null);
-        } else {
-          package['features'] = result2.rows;
-          cb(null, package);
-        }
-      })
-      // cb(null, result);
+      cb(null, result.rows[0]);
     }
   })
 }
-
 
 const getStyle = async function(product_id) {
   let package = {'product_id': product_id};
@@ -131,6 +125,29 @@ module.exports = {
   getRelated,
 }
 
+//native version, before optimization:
+
+// const getAProduct1 = function(id, cb) {
+//   let queryProduct = `SELECT * FROM product WHERE product_id = ${id}`;
+//   let queryFeature = `SELECT feature,value FROM features WHERE product_id = ${id}`;
+//   pool.query(queryProduct, (err, result1) => {
+//     if(err) {
+//       cb(err, null);
+//     } else {
+//       let package = result1.rows[0];
+//       // console.log(package);
+//       pool.query(queryFeature, (err, result2) => {
+//         if (err) {
+//           cb(err, null);
+//         } else {
+//           package['features'] = result2.rows;
+//           cb(null, package);
+//         }
+//       })
+//       // cb(null, result);
+//     }
+//   })
+// }
 
 
 // const getStyle1 = function(product_id, cb) {
