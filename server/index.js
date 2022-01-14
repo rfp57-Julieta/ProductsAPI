@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../database/index.js');
-const router = require('./router.js');
+const productRoute = require('./router.js');
+const cartRoute = require('./cartRoute.js');
 const cors = require('cors');
 
 const app = express();
@@ -16,5 +17,6 @@ app.listen(PORT, function() {
   console.log(`Listening on port ${PORT}`);
 })
 
-app.use('/products', router);
+app.use('/products', productRoute);
 
+app.use('/cart', cartRoute);

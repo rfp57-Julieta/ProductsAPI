@@ -27,12 +27,33 @@ router.get('/:id', (req, res) => {
 })
 
 router.get('/:id/styles', (req, res) => {
-  db.getStyle(req.params.id, (err, result) => {
+  db.getStyle(req.params.id)
+    .then((result) => {
+      console.log('Get all styles!')
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      console.log('Failed to get data: ', err);
+      res.status(500).send(err);
+    })
+})
+  // db.getStyle(req.params.id, (err, result) => {
+  //   if (err) {
+  //     console.log('Failed to get data: ', err);
+  //     res.status(500).send();
+  //   } else {
+  //     console.log('Get all styles!')
+  //     res.status(200).send(result);
+  //   }
+  // })
+
+router.get('/:id/related', (req, res) => {
+  db.getRelated(req.params.id, (err, result) => {
     if (err) {
       console.log('Failed to get data: ', err);
-      res.status(500).send();
+      res.status(500).send(err);
     } else {
-      console.log('Get all styles!')
+      console.log('Get product info!')
       res.status(200).send(result);
     }
   })
