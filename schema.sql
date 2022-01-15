@@ -1,5 +1,7 @@
 
--- DROP TABLE IF EXISTS product, styles, photos, skus, features, cart, related;
+-- DROP TABLE IF EXISTS product, styles, photos, skus, features, cart, related, buy;
+DROP TABLE IF EXISTS cart;
+
 
 -- CREATE TABLE IF NOT EXISTS product(
 --    product_id serial NOT NULL PRIMARY KEY,
@@ -41,12 +43,12 @@
 --    value VARCHAR
 -- );
 
--- CREATE TABLE IF NOT EXISTS cart(
---    cart_id serial NOT NULL PRIMARY KEY,
---    user_session VARCHAR NOT NULL,
---    product_id INT NOT NULL REFERENCES product (product_id),
---    active INT
--- );
+CREATE TABLE IF NOT EXISTS cart(
+   cart_id serial NOT NULL PRIMARY KEY,
+   user_session VARCHAR NOT NULL,
+   product_id INT NOT NULL REFERENCES product (product_id),
+   active INT
+);
 
 -- CREATE TABLE IF NOT EXISTS related(
 --   related_id serial NOT NULL PRIMARY KEY,
@@ -59,14 +61,14 @@
 -- \COPY photos FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/photosDATA.csv' DELIMITER ',' CSV HEADER;
 -- \COPY skus FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/skusDATA.csv' DELIMITER ',' CSV HEADER;
 -- \COPY features FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/featuresDATA.csv' DELIMITER ',' CSV HEADER;
--- \COPY cart FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/cartDATA.csv' DELIMITER ',' CSV HEADER;
+\COPY cart FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/cartDATA.csv' DELIMITER ',' CSV HEADER;
 -- \COPY related FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/relatedDATA.csv' DELIMITER ',' CSV HEADER;
 
-CREATE INDEX product_idx ON styles USING HASH (productId);
-CREATE INDEX style_idx ON photos USING HASH (styleId);
-CREATE INDEX style_idx ON skus USING HASH (styleId);
-CREATE INDEX product_idx ON features USING HASH (product_id);
-CREATE INDEX product_idx ON cart USING HASH (product_id);
-CREATE INDEX product_idx ON related USING HASH (product_id);
+-- CREATE INDEX product_idx ON styles USING HASH (productId);
+-- CREATE INDEX style_idx ON photos USING HASH (styleId);
+-- CREATE INDEX style_idx ON skus USING HASH (styleId);
+-- CREATE INDEX product_idx ON features USING HASH (product_id);
+-- CREATE INDEX product_idx ON cart USING HASH (product_id);
+-- CREATE INDEX product_idx ON related USING HASH (product_id);
 
 
