@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
   db.getProducts((err, result) => {
     if (err) {
       console.log('Failed to get data: ', err);
-      res.status(500).send();
+      res.status(500).send(err);
     } else {
       console.log('Get all products!')
       res.status(200).send(result.rows);
