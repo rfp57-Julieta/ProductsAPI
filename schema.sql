@@ -1,6 +1,6 @@
 
 -- DROP TABLE IF EXISTS product, styles, photos, skus, features, cart, related, buy;
-DROP TABLE IF EXISTS cart;
+-- DROP TABLE IF EXISTS cart;
 
 
 -- CREATE TABLE IF NOT EXISTS product(
@@ -43,12 +43,12 @@ DROP TABLE IF EXISTS cart;
 --    value VARCHAR
 -- );
 
-CREATE TABLE IF NOT EXISTS cart(
-   cart_id serial NOT NULL PRIMARY KEY,
-   user_session VARCHAR NOT NULL,
-   product_id INT NOT NULL REFERENCES product (product_id),
-   active INT
-);
+-- CREATE TABLE IF NOT EXISTS cart(
+--    cart_id serial NOT NULL PRIMARY KEY,
+--    user_session VARCHAR NOT NULL,
+--    product_id INT NOT NULL REFERENCES product (product_id),
+--    active INT
+-- );
 
 -- CREATE TABLE IF NOT EXISTS related(
 --   related_id serial NOT NULL PRIMARY KEY,
@@ -64,11 +64,15 @@ CREATE TABLE IF NOT EXISTS cart(
 \COPY cart FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/cartDATA.csv' DELIMITER ',' CSV HEADER;
 -- \COPY related FROM '/Users/shuwenliang/Documents/SDC/ProductsAPI/relatedDATA.csv' DELIMITER ',' CSV HEADER;
 
--- CREATE INDEX product_idx ON styles USING HASH (productId);
--- CREATE INDEX style_idx ON photos USING HASH (styleId);
--- CREATE INDEX style_idx ON skus USING HASH (styleId);
--- CREATE INDEX product_idx ON features USING HASH (product_id);
--- CREATE INDEX product_idx ON cart USING HASH (product_id);
--- CREATE INDEX product_idx ON related USING HASH (product_id);
+-- DROP INDEX IF EXISTS product_idx;
+-- DROP INDEX IF EXISTS style_idx;
+-- CREATE INDEX product_idx ON styles (productId);
+-- CREATE INDEX style_idx ON photos (styleId);
+
+-- CREATE INDEX skus_style_idx ON skus(styleId);
+-- CREATE INDEX features_product_idx ON features(product_id);
+
+CREATE INDEX cart_product_idx ON cart(product_id);
+-- CREATE INDEX related_product_idx ON related(product_id);
 
 
