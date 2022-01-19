@@ -1,14 +1,14 @@
+require('newrelic');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const cors = require('cors');
 const db = require('../database/index.js');
 const productRoute = require('./router.js');
-const cartRoute = require('./cartRoute.js');
-
+// const cartRoute = require('./cartRoute.js');
 
 const app = express();
-const PORT = 8000;
+const PORT = 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -28,4 +28,4 @@ app.listen(PORT, function() {
 
 app.use('/products', productRoute);
 
-app.use('/cart', cartRoute);
+// app.use('/cart', cartRoute);

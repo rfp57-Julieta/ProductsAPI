@@ -7,3 +7,5 @@ cartDATA.csv
 featuresDATA.csv
 photosDATA.csv
 relatedDATA.csv
+newRelicKey.config.js
+newrelic_agent.log
