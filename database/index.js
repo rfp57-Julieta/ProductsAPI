@@ -97,40 +97,40 @@ const getStyle = async function(pID) {
 
 
 
-const getCart = function(cartID, cb) {
-  //match the productid then send back the corrsponding styles such as skus_id and quantity
-  let queryCart =`SELECT skus_id, quantity
-  FROM skus
-  LEFT JOIN styles ON skus.styleId = styles.styles_id
-  LEFT JOIN cart ON cart.product_id = styles.productId
-  WHERE cart.cart_id = ${cartID}
-  `
-  pool.query(queryCart)
-    .then((result) => {
-      cb(null, result.rows);
-    })
-    .catch((err) => {
-      cb(err, null);
-    })
-}
+// const getCart = function(cartID, cb) {
+//   //match the productid then send back the corrsponding styles such as skus_id and quantity
+//   let queryCart =`SELECT skus_id, quantity
+//   FROM skus
+//   LEFT JOIN styles ON skus.styleId = styles.styles_id
+//   LEFT JOIN cart ON cart.product_id = styles.productId
+//   WHERE cart.cart_id = ${cartID}
+//   `
+//   pool.query(queryCart)
+//     .then((result) => {
+//       cb(null, result.rows);
+//     })
+//     .catch((err) => {
+//       cb(err, null);
+//     })
+// }
 
-const addToCart = async function(sku_id, sessionID) {
-  //provided skus_id, need to find the corsponding product_id
-  let queryProductID = `SELECT product_id
-  FROM product
-  LEFT JOIN styles ON product.product_id = styles.productId
-  LEFT JOIN skus ON skus.styleId = styles.styles_id
-  WHERE skus.skus_id = ${sku_id}`;
+// const addToCart = async function(sku_id, sessionID) {
+//   //provided skus_id, need to find the corsponding product_id
+//   let queryProductID = `SELECT product_id
+//   FROM product
+//   LEFT JOIN styles ON product.product_id = styles.productId
+//   LEFT JOIN skus ON skus.styleId = styles.styles_id
+//   WHERE skus.skus_id = ${sku_id}`;
 
-  const productId = await pool.query(queryProductID);
-  // return productId.rows[0].product_id;
+//   const productId = await pool.query(queryProductID);
+//   // return productId.rows[0].product_id;
 
-  //insert the corsponding product_id to cart table
-  let queryInsert= `INSERT INTO cart(user_session, product_id, active) VALUES('${sessionID}', ${productId.rows[0].product_id}, ${1}) RETURNING *`;
-  const addedItem = await pool.query(queryInsert).catch((err) => {console.log('failed to add to cart: ', err)});
+//   //insert the corsponding product_id to cart table
+//   let queryInsert= `INSERT INTO cart(user_session, product_id, active) VALUES('${sessionID}', ${productId.rows[0].product_id}, ${1}) RETURNING *`;
+//   const addedItem = await pool.query(queryInsert).catch((err) => {console.log('failed to add to cart: ', err)});
 
-  return addedItem.rows;
-};
+//   return addedItem.rows;
+// };
 
 //(SELECT cart_id+1 FROM cart ORDER BY cart_id DESC LIMIT 1
 
@@ -156,9 +156,9 @@ module.exports = {
   getProducts,
   getAProduct,
   getStyle,
-  getCart,
+  // getCart,
   getRelated,
-  addToCart,
+  // addToCart,
 }
 
 //native version, before optimization:
