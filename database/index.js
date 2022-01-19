@@ -6,8 +6,8 @@ const pool = new Pool({
   database: "products",
   password: "123",
   port: 5432,
-  idleTimeoutMillis: 0,
-  connectionTimeoutMillis: 0,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
 });
 
 
@@ -19,13 +19,13 @@ const pool = new Pool({
 //   port: 5432,
 // });
 
-pool.connect()
-  .then((res)=> {
-    console.log('Connect to Postgres successfully!');
-  })
-  .catch((err) => {
-    console.log(err);
-  })
+// pool.connect()
+//   .then((res)=> {
+//     console.log('Connect to Postgres successfully!');
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   })
 
 const getProducts = function(cb) {
   let queryString = 'SELECT p.product_id AS id, p.name, p.slogan, p.description, p.category, p.default_price FROM product as p LIMIT 2';
@@ -53,7 +53,8 @@ const getAProduct = function(id, cb) {
       cb(null, result.rows[0]);
     }
   })
-}
+
+};
 
 const getStyle = async function(pID) {
   let queryStyle = `SELECT
@@ -86,8 +87,12 @@ const getStyle = async function(pID) {
     GROUP BY styles.productId`
 
   let package = await pool.query(queryStyle).catch((err) => {console.log('style err: ', err)});
-  return package.rows;
 
+  if (package.rows.length === 0 ) {
+    return ['no results'];
+  } else {
+    return package.rows;
+  }
 }
 
 
@@ -121,11 +126,13 @@ const addToCart = async function(sku_id, sessionID) {
   // return productId.rows[0].product_id;
 
   //insert the corsponding product_id to cart table
-  let queryInsert= `INSERT INTO cart(cart_id, user_session, product_id, active) VALUES((SELECT cart_id+1 FROM cart ORDER BY cart_id DESC LIMIT 1),'${sessionID}', ${productId.rows[0].product_id}, ${1}) RETURNING *`;
+  let queryInsert= `INSERT INTO cart(user_session, product_id, active) VALUES('${sessionID}', ${productId.rows[0].product_id}, ${1}) RETURNING *`;
   const addedItem = await pool.query(queryInsert).catch((err) => {console.log('failed to add to cart: ', err)});
 
   return addedItem.rows;
 };
+
+//(SELECT cart_id+1 FROM cart ORDER BY cart_id DESC LIMIT 1
 
 
 const getRelated = function(product_id, cb) {
